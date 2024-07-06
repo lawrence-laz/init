@@ -12,11 +12,11 @@ alias init="/path/to/init/zig-out/bin/init -c '/path/to/init/config/'"
 ```
 
 ## 🔨 Create a template
-2. Create a directory for your new template:
+1. Create a directory for your new template:
 ```sh
 mkdir -p config/templates/your-template-name
 ```
-2.1. Create template sub-directory structure and files, for example:
+2. Create template sub-directory structure and files, for example:
 ```
 config/templates/your-template-name
 |- src/
