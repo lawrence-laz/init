@@ -30,3 +30,10 @@ config/templates/your-template-name
 mkdir my-project && cd my-project
 init your-template-name
 ```
+
+## Parameters
+Templates can have parameters, which are surrounded by three underscores (ex. `___name___`) in file contents, file and directory names.
+Then they can be used by calling `init` with `-p name=value`, for example:
+```sh
+init your-template-name -p name=my-project -p "description=My very own project."
+```
