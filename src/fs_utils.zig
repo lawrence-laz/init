@@ -29,7 +29,7 @@ pub fn copyDir(context: *const Context, source_dir: std.fs.Dir, target_dir: std.
 
                 const source_file = try source_dir.openFile(subelement.name, .{});
                 defer source_file.close();
-                const source_content = try source_file.readToEndAlloc(context.allocator, 0xFFFFF);
+                const source_content = try source_file.readToEndAlloc(context.allocator, 0xA000000);
                 const target_content = try replaceParamsAlloc(context, source_content);
                 const target_file_name = try replaceParamsAlloc(context, subelement.name);
                 const target_file = try target_dir.createFile(target_file_name, .{});
