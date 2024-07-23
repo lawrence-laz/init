@@ -28,7 +28,7 @@ pub fn main() !u8 {
                 maybe_template_dir = try templates_dir.openDir(context.template_name, .{});
                 std.log.debug("Using template {s}", .{template.name});
             } else {
-                error_handler.unsupportedTemplateKind(&context, template.kind);
+                error_handler.unsupportedTemplateKind(template.kind);
                 return 1;
             }
         }
