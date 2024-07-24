@@ -26,7 +26,6 @@ pub fn main() !u8 {
         if (std.mem.eql(u8, template.name, context.template_name)) {
             if (template.kind == .directory) {
                 maybe_template_dir = try templates_dir.openDir(context.template_name, .{});
-                std.log.debug("Using template {s}", .{template.name});
             } else {
                 error_handler.unsupportedTemplateKind(template.kind);
                 return 1;
