@@ -14,7 +14,7 @@ pub fn templateNotFound(context: *const Context, templates_dir: std.fs.Dir) void
         \\Template '{s}' not found.
         \\Available templates:
         \\
-    , .{context.template_name});
+    , .{context.template_name.?});
     var templates_iter = templates_dir.iterate();
     while (templates_iter.next() catch null) |template| {
         if (template.kind != .directory) {

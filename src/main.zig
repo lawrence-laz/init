@@ -14,6 +14,13 @@ pub fn main() !u8 {
     const context = try Context.init(arena.allocator());
     defer context.deinit();
 
+    if (context.template_name == null or
+        context.cli_args.args.help != 0)
+    {
+        std.debug.print(Context.cli_help, .{});
+        return 0;
+    }
+
     var config_dir = try std.fs.openDirAbsolute(context.config_dir_path, .{});
     defer config_dir.close();
 
@@ -23,9 +30,9 @@ pub fn main() !u8 {
     var templates_iter = templates_dir.iterate();
     var maybe_template_dir: ?std.fs.Dir = null;
     while (try templates_iter.next()) |template| {
-        if (std.mem.eql(u8, template.name, context.template_name)) {
+        if (std.mem.eql(u8, template.name, context.template_name.?)) {
             if (template.kind == .directory) {
-                maybe_template_dir = try templates_dir.openDir(context.template_name, .{});
+                maybe_template_dir = try templates_dir.openDir(context.template_name.?, .{});
             } else {
                 error_handler.unsupportedTemplateKind(template.kind);
                 return 1;

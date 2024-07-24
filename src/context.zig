@@ -1,20 +1,10 @@
 const clap = @import("clap");
 const std = @import("std");
 
-const cli_params = clap.parseParamsComptime(
-    \\-h, --help             Display this help and exit.
-    \\-c, --config <str>     Config directory path.
-    \\-p, --param <str>...   Parameter to be replaced (ex. key=value)
-    \\<str>
-    \\
-);
-
-const CliArgs = clap.Result(clap.Help, &cli_params, clap.parsers.default);
-
 pub const Context = struct {
     cli_args: CliArgs,
     allocator: std.mem.Allocator,
-    template_name: []const u8,
+    template_name: ?[]const u8,
     config_dir_path: []const u8,
     current_dir_path: []const u8,
     template_params: std.StringArrayHashMap([]const u8),
@@ -29,10 +19,10 @@ pub const Context = struct {
             return err;
         };
 
-        const template_name: []const u8 = if (args.positionals.len == 1)
+        const template_name: ?[]const u8 = if (args.positionals.len == 1)
             args.positionals[0]
         else
-            return error.ExpectedSinglePositionalParamForTemplate;
+            null;
 
         const config_dir_path: []const u8 = args.args.config orelse
             return error.MissingConfig;
@@ -64,4 +54,31 @@ pub const Context = struct {
     pub fn deinit(self: Context) void {
         self.cli_args.deinit();
     }
+
+    pub const cli_params_help =
+        \\    -h, --help             Display this help and exit.
+        \\    -c, --config <str>     Config directory path.
+        \\    -p, --param <str>...   Parameter to be replaced (ex. key=value)
+        \\    <str>                  Template name
+        \\
+    ;
+
+    pub const cli_help =
+        \\init - commandline tool for creaing projects or other artifacts based on template.
+        \\
+        \\Usage: 
+        \\    init <TEMPLATE> [-c|--config "path/to/config"] [-p|--param "key=value"]...
+        \\
+        \\Parameters:
+        \\
+    ++ cli_params_help ++
+        \\
+        \\Exmaple:
+        \\    init zig-raylib --param "name=my-game"
+        \\
+    ;
+
+    const cli_params = clap.parseParamsComptime(cli_params_help);
+
+    const CliArgs = clap.Result(clap.Help, &cli_params, clap.parsers.default);
 };
