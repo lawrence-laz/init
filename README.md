@@ -48,5 +48,5 @@ init your-template-name -p name=my-project -p "description=My very own project."
 ```
 Would replace:
  - from `./your-template-name/dir-___name___/` to `./dir-my-project/`
- - `./your-template-name/___name___.txt` to `./my-project.txt`
+ - from `./your-template-name/___name___.txt` to `./my-project.txt`
  - and contents of `some-file.txt` from `This project name is ___name___` to `This project name is my-project` 
