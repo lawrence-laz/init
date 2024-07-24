@@ -1,4 +1,11 @@
-# init
+```html
+.__       .__  __   
+|__| ____ |__|/  |_ 
+|  |/    \|  \   __\
+|  |   |  \  ||  |  
+|__|___|  /__||__|  
+        \/          
+```
 Create custom project templates with ease.
 
 ## 📦 Install
@@ -33,7 +40,13 @@ init your-template-name
 
 ## Parameters
 Templates can have parameters, which are surrounded by three underscores (ex. `___name___`) in file contents, file and directory names.
-Then they can be used by calling `init` with `-p name=value`, for example:
+Then they can be used by calling `init` with `-p name=value`
+
+For example running:
 ```sh
 init your-template-name -p name=my-project -p "description=My very own project."
 ```
+Would replace:
+ - from `./your-template-name/dir-___name___/` to `./dir-my-project/`
+ - `./your-template-name/___name___.txt` to `./my-project.txt`
+ - and contents of `some-file.txt` from `This project name is ___name___` to `This project name is my-project` 
