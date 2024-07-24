@@ -1,0 +1,15 @@
+.{
+    .name = "zig-exe",
+    .version = "0.0.0",
+    .dependencies = .{
+        .@"raylib-zig" = .{
+            .url = "git+https://github.com/Not-Nik/raylib-zig#85e07d7db56c2e228d543ca17a9df0ef87f349d8",
+            .hash = "1220361ce363a465c3f52e7e35ca5f1d9c2f5ed8a9207b79c2edb4396cdf31009c48",
+        },
+    },
+    .paths = .{
+        "build.zig",
+        "build.zig.zon",
+        "src",
+    },
+}
