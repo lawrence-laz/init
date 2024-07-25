@@ -14,7 +14,7 @@ pub fn main() !u8 {
     const context = try Context.init(arena.allocator());
     defer context.deinit();
 
-    if (context.template_name == null or
+    if ((context.template_name == null and context.cli_args.args.list == 0) or
         context.cli_args.args.help != 0)
     {
         std.debug.print(Context.cli_help, .{});
@@ -28,30 +28,39 @@ pub fn main() !u8 {
     defer templates_dir.close();
 
     var templates_iter = templates_dir.iterate();
-    var maybe_template_dir: ?std.fs.Dir = null;
-    while (try templates_iter.next()) |template| {
-        if (std.mem.eql(u8, template.name, context.template_name.?)) {
+
+    if (context.cli_args.args.list != 0) {
+        while (try templates_iter.next()) |template| {
             if (template.kind == .directory) {
-                maybe_template_dir = try templates_dir.openDir(context.template_name.?, .{});
-            } else {
-                error_handler.unsupportedTemplateKind(template.kind);
-                return 1;
+                std.debug.print("{s}\n", .{template.name});
             }
         }
-    }
-    defer {
-        if (maybe_template_dir) |*template_dir_value| {
-            template_dir_value.close();
+        return 0;
+    } else if (context.template_name) |template_name| {
+        var maybe_template_dir: ?std.fs.Dir = null;
+        while (try templates_iter.next()) |template| {
+            if (std.mem.eql(u8, template.name, template_name)) {
+                if (template.kind == .directory) {
+                    maybe_template_dir = try templates_dir.openDir(template_name, .{});
+                } else {
+                    error_handler.unsupportedTemplateKind(template.kind);
+                    return 1;
+                }
+            }
         }
-    }
-
-    if (maybe_template_dir) |template_dir| {
-        const template_path = try template_dir.realpathAlloc(arena.allocator(), ".");
-        try fs_utils.copyDirAbsolute(&context, template_path, context.current_dir_path);
-    } else {
-        error_handler.templateNotFound(&context, templates_dir);
-        return 1;
-    }
+        defer {
+            if (maybe_template_dir) |*template_dir_value| {
+                template_dir_value.close();
+            }
+        }
+        if (maybe_template_dir) |template_dir| {
+            const template_path = try template_dir.realpathAlloc(arena.allocator(), ".");
+            try fs_utils.copyDirAbsolute(&context, template_path, context.current_dir_path);
+        } else {
+            error_handler.templateNotFound(&context, templates_dir);
+            return 1;
+        }
+    } else unreachable;
 
     return 0;
 }

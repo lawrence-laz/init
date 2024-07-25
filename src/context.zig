@@ -59,6 +59,7 @@ pub const Context = struct {
         \\    -h, --help             Display this help and exit.
         \\    -c, --config <str>     Config directory path.
         \\    -p, --param <str>...   Parameter to be replaced (ex. key=value)
+        \\    -l, --list             List all templates
         \\    <str>                  Template name
         \\
     ;
