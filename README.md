@@ -10,6 +10,7 @@ Create custom project templates with ease.
 
 ## 📦 Install
 1. Build from source:
+![Zig v0.13](https://img.shields.io/badge/Zig-v0.13-orange?logo=zig)
 ```sh
 git clone --depth 1 https://github.com/lawrence-laz/init && cd init && zig build --release=safe
 ```
